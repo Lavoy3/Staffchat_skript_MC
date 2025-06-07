@@ -1,0 +1,16 @@
+# staffchat.sk  —  drop in plugins/Skript/scripts/ and  /sk reload staffchat
+options:
+    staff-prefix: "&8[&bStaff&8]&r "          # ² colour prefix
+    staff-permission: "staffchat.use"         # node to send/receive
+
+command /sc <text>:
+    permission: {@staff-permission}
+    permission message: &cYou don’t have access to staff chat.
+    trigger:
+        set {_msg} to arg                     # what the sender typed
+        # translate colour codes manually so it works on every Skript version
+        replace all "&" with "§" in {_msg}
+
+        loop all players:
+            if loop-player has permission {@staff-permission}:
+                send "%{@staff-prefix}%%player% &8» &f%{_msg}%" to loop-player
